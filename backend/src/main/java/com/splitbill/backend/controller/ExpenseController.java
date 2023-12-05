@@ -48,6 +48,7 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.updateExpense(tempExpense));
     }
 
+    // Get all expenses of a group
     @GetMapping("/group/{groupId}")
     public Set<Expense> getAllExpensesOfAGroup(@PathVariable("groupId") Long groupId){
         Group tempGroup = new Group();

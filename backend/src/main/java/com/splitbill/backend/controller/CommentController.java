@@ -48,6 +48,7 @@ public class CommentController {
         return ResponseEntity.ok(this.commentService.updateComment(tempComment));
     }
 
+    // Get all comments of an expense
     @GetMapping("/expense/{expenseId}")
     public Set<Comment> getAllCommentsOfAnExpense(@PathVariable("expenseId") Long expenseId){
         Expense tempExpense = new Expense();

@@ -1,0 +1,42 @@
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-4 col-lg-4 col-xl-5">
+          <img
+            src="../../assets/logo.png"
+            class="img-fluid"
+            alt="Sample image"
+          />
+        </div>
+        <!-- {{group | json}} -->
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form>
+            <div class="form-outline mb-4">
+              <label class="form-label">My group shall be called</label>
+  
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Enter your group name"
+                name="groupName"
+                required
+                [(ngModel)] = "group.groupName"
+              />
+            </div>
+  
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem"
+                (click)="formSubmit()"
+                >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  

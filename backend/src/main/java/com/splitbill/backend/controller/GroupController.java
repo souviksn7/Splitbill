@@ -49,6 +49,7 @@ public class GroupController {
         return ResponseEntity.ok(groupService.updateGroup(tempGroup));
     }
 
+    // Assign a user to a group
     @PutMapping("/{groupId}/user/{userId}")
     public Group assignUserToGroup(@PathVariable Long groupId, @PathVariable Long userId){
         return groupService.assignUserToGroup(groupId, userId);
