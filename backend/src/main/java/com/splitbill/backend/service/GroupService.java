@@ -21,4 +21,6 @@ public interface GroupService {
     public Set<Group> getAllGroupsOfAUser(User tempUser);
 
     public Group assignUserToGroup(Long groupId, Long userId);
+
+    public Set<User> removeUserFromGroup(Long groupId, Long userId);
 }

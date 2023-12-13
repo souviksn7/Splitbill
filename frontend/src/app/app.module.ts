@@ -11,7 +11,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { AddGroupComponent,  } from './add-group/add-group.component'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GroupDetailsComponent } from './group-details/group-details.component';
+import { ViewGroupMembersComponent } from './view-group-members/view-group-members.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input'
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,13 +26,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RegisterComponent,
     LoginComponent,
     AddGroupComponent,
+    GroupDetailsComponent,
+    ViewGroupMembersComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

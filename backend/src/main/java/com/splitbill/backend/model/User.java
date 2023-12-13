@@ -16,7 +16,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
     // Properties with Column name
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "phone")
+    private Integer phone;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
@@ -91,4 +94,5 @@ public class User {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
 }

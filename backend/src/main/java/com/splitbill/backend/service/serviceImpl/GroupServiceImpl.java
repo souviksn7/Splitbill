@@ -58,4 +58,16 @@ public class GroupServiceImpl implements GroupService {
         group.setUsers(userSet);
         return groupRepository.save(group);
     }
+
+    @Override
+    public Set<User> removeUserFromGroup(Long groupId, Long userId) {
+        Set<User> userSet = null;
+        Group group = groupRepository.findById(groupId).get();
+        User user = userRepository.findById(userId).get();
+        userSet = group.getUsers();
+        userSet.remove(user);
+        group.setUsers(userSet);
+        groupRepository.save(group);
+        return userRepository.findByGroups(group);
+    }
 }

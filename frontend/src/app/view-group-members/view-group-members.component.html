@@ -1,0 +1,98 @@
+<div class="container">
+    <div class="row">
+          <div class="col-md-8 col-sm-12 table-responsive">
+            <h4 class="yourExpenseheading">Group members</h4>
+            <hr />
+            <br />
+            <div
+              class="alert alert-success"
+              *ngIf="groupMembers?.length == 0"
+            >
+              <strong class="text-bold">
+                No Expenses, Add Now
+                <i class="fa-regular fa-face-smile fa-2xl"></i
+              ></strong>
+            </div>
+            <table
+              *ngIf="groupMembers.length > 0"
+              class="table table-bordered table-hover table-striped tableTop"
+            >
+              <thead class="tableHeadColor">
+                <tr>
+                  <th class="headingsTable">Name</th>
+                  <th class="headingsTable">Email</th>
+                  <th class="headingsTable">Phone</th>
+                  <th class="headingsTable">Action Button</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr *ngFor="let member of groupMembers">
+                  <td class="tableSpace">
+                    <p
+                      class="text-capitalize fs-5"
+                    >
+                      {{ member.name }}
+                    </p>
+                  </td>
+                  
+                  <td>{{ member.email }}</td>
+                  <td>{{member.phone}}</td>
+                  <td>
+                    <button
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      (click)="removeMember(member.userId)"
+                      class="btn btn-outline-primary"
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br /><br />
+        <div class="card col-md-4 col-sm-12">
+            <div class="card-header text-center fs-4 allExpensesHeading">
+                Add member to group <i class="fa-solid fa-money-check-dollar fa-lg"></i>
+            </div>
+            <div class="form-outline mb-4" data-mdb-input-init>
+                <input [(ngModel)]="searchValue"  (ngModelChange)="filterMembers()" type="search" class="form-control" id="datatable-search-input" placeholder="search">
+            </div>
+
+            <div>
+                <div *ngFor="let user of users" class="col-12">
+                    <a class="groupName">
+                        <div class="card cardgroup">
+                          <div class="card-body"  >
+                            <div>
+                                <span class="text-capitalize">
+                                    {{ user.name }}
+                                </span>
+                                <button
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    (click)="addMember(user.userId)"
+                                    class="btn btn-outline-primary "
+                                    [disabled]="user.alreadyAdded"
+                                    >
+                                    Add
+                                </button>
+                                <span class="form-text" *ngIf="user.alreadyAdded === true">
+                                    Already added
+                                </span>
+                                <div class="form-text">
+                                      Phone: <span>{{user.phone}}</span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

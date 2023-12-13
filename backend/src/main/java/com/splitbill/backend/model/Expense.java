@@ -26,6 +26,9 @@ public class Expense {
     @Column(name = "amount")
     private float amount;
 
+    @Column(name = "upi_id")
+    private String upiId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payer_id")
 //    @JsonIgnore

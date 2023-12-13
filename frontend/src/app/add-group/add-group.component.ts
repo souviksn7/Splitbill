@@ -37,8 +37,7 @@ export class AddGroupComponent implements OnInit {
     //all done
     
     this._group.addGroup(this.group).subscribe((data: any)=>{
-      this.group.groupName = "";
-      Swal.fire('Success !!', 'Group is added successfuly', 'success');
+      Swal.fire('Success !!', 'Group is added successfully', 'success');
     },
     (error)=>{
       console.log(error);

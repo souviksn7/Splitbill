@@ -50,9 +50,15 @@ public class GroupController {
     }
 
     // Assign a user to a group
-    @PutMapping("/{groupId}/user/{userId}")
+    @PutMapping("/{groupId}/addUser/{userId}")
     public Group assignUserToGroup(@PathVariable Long groupId, @PathVariable Long userId){
         return groupService.assignUserToGroup(groupId, userId);
+    }
+
+    // Remove a user form a group
+    @PutMapping("/{groupId}/removeUser/{userId}")
+    public Set<User> removeUserFromGroup(@PathVariable Long groupId, @PathVariable Long userId){
+        return groupService.removeUserFromGroup(groupId, userId);
     }
 
     // get all groups of a user using groupId
