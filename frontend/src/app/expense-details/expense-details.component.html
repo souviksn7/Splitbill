@@ -1,0 +1,132 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card">
+              <div
+                class="card-header text-capitalize text-center fs-3 fontType text-primary"
+              >
+                {{ expenseDetails.description }}
+              </div>
+  
+              <div class="card-body fs-5">
+                <div
+                  *ngFor="let member of splitExpensesInModal"
+                >
+                  <div
+                    *ngIf="
+                      expenseDetails.addedBy.email ==
+                        loggedInUser.email &&
+                      member.user.email != loggedInUser.email
+                    "
+                  >
+                    <div *ngIf="member.isPaid">
+                      <span class="text-capitalize fontType"
+                        >{{ member.user.name }}
+                      </span>
+                      paid you
+                      {{
+                        expenseDetails.amount /
+                        splitExpensesInModal.length
+                          | currency: "INR":"symbol"
+                      }}
+                      <hr />
+                    </div>
+  
+                    <div *ngIf="!member.isPaid">
+                      <span class="text-capitalize fontType">
+                        {{ member.user.name }}</span
+                      >
+                      -
+                      {{
+                        expenseDetails.amount /
+                          splitExpensesInModal.length
+                          | currency: "INR":"symbol"
+                      }}
+                      <button
+                        class="btn btn-success paidButton"
+                        (click)="updateTransaction(member.splitExpenseId)"
+                      >
+                        Mark as paid <i class="fa-solid fa-check"></i>
+                      </button>
+                      <hr />
+                    </div>
+                  </div>
+  
+                  <div
+                    *ngIf="
+                      expenseDetails.addedBy.email !=
+                        loggedInUser.email &&
+                      member.user.email == loggedInUser.email
+                    "
+                  >
+                    <div *ngIf="member.isPaid; fontType">
+                      You have Paid
+                      {{
+                        expenseDetails.amount /
+                          splitExpensesInModal.length
+                          | currency: "INR":"symbol"
+                      }}
+                      to {{ expenseDetails.addedBy.name }}
+                    </div>
+                    <div *ngIf="!member.isPaid; fontType">
+                      You have to pay
+                      {{
+                        expenseDetails.amount /
+                          splitExpensesInModal.length
+                          | currency: "INR":"symbol"
+                      }}
+                      to {{ expenseDetails.addedBy.name }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
+      </div>
+  
+    <div class="col-md-4">
+        <div class="fs-3 fontType">Comment Section</div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"></label>
+          <textarea
+            placeholder="Type your Comments Here"
+            [(ngModel)]="commentInput"
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="2"
+          ></textarea>
+        </div>
+  
+        <button
+          (click)="createComment()"
+          class="btn btn-primary"
+          [disabled]="!commentInput"
+        >
+          Add Comment <i class="fa-solid fa-comment-medical"></i>
+        </button>
+        <hr />
+  
+        <div *ngFor="let comment of allComments">
+          <div class="card">
+            <div class="card-body">
+              <i class="fa-regular fa-user"></i>
+              <span class="vl text-success">
+                {{ comment.user.name }}</span
+              >
+              <span class="vl">
+                {{ comment.date | date: "dd/MM/yy hh:mm a" }}</span
+              >
+              <hr />
+              {{ comment.commentText }}
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+  

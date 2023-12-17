@@ -41,4 +41,9 @@ public class SplitExpensesAmongUsersServiceImpl implements SplitExpensesAmongUse
     public Set<SplitExpensesAmongUsers> getSplitExpensesByExpense(Expense tempExpense) {
         return splitExpensesAmongUsersRepository.findByExpense(tempExpense);
     }
+
+    @Override
+    public SplitExpensesAmongUsers updateSplitExpenses(SplitExpensesAmongUsers splitExpensesAmongUsers) {
+        return splitExpensesAmongUsersRepository.save(splitExpensesAmongUsers);
+    }
 }

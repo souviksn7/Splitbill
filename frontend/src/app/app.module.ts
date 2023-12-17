@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input'
 import { MatNativeDateModule } from '@angular/material/core';
+import { ExpenseDetailsComponent } from './expense-details/expense-details.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     AddGroupComponent,
     GroupDetailsComponent,
     ViewGroupMembersComponent,
+    ExpenseDetailsComponent,
   ],
   imports: [
     BrowserModule,

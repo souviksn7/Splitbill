@@ -35,4 +35,19 @@ export class GroupDetailsService {
   public addSplitExpense(splitExpense: any){
     return this._http.post(`${baseUrl}/splitExpenses/`, splitExpense);
   }
+
+  // get SplitExpenses in modal by expenseID
+  public getSplitExpensesInModal(expenseId: any){
+    return this._http.get(`${baseUrl}/splitExpenses/expense/${expenseId}`);
+  }
+
+  // delete expense with expenseId
+  public deleteExpense(expenseId: any){
+    return this._http.delete(`${baseUrl}/expense/${expenseId}`);
+  }
+
+  //delete splitExpense with splitExpenseID
+  public deleteSplitExpense(splitExpenseId: any){
+    return this._http.delete(`${baseUrl}/splitExpenses/${splitExpenseId}`)
+  }
 }

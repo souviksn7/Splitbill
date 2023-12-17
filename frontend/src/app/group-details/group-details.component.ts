@@ -54,21 +54,26 @@ export class GroupDetailsComponent implements OnInit{
   ];
   expenses = [
     {
-      "description": "Mirik",
-      "amount": 100,
-      "upiId": "demoUpiId",
-      "date": "2023-11-02",
-      "addedBy": {
-        "userId": 2,
-        "name": "souvik nandi",
-        "email": "svk@gmail.com",
-        "password": "123"
+      expenseId: 1,
+      description: "Mirik",
+      amount: 100,
+      upiId: "demoUpiId",
+      date: "2023-11-02",
+      addedBy: {
+        userId: 2,
+        name: "souvik nandi",
+        email: "svk@gmail.com",
+        password: "123"
       },
+      group: {
+        groupId: 2,
+        groupName: "Demo"
+      }
     }
   ]
 
   loggedInUser = {
-    "userId": 2,
+    "userId": 1,
     "name": "souvik",
     "email": "svk@gmail.com",
     "password": "456"
@@ -89,8 +94,46 @@ export class GroupDetailsComponent implements OnInit{
    };
 
    expenseSettled = false;
-   expenseInModal: any;
 
+   expenseInModal = {
+    expenseId: 1,
+    description: "Mirik",
+    amount: 100,
+    upiId: "demoUpiId",
+    date: "2023-11-02",
+    addedBy: {
+      userId: 2,
+      name: "souvik nandi",
+      email: "svk@gmail.com",
+      password: "123"
+    },
+    group: {
+      groupId: 2,
+      groupName: "Demo"
+    }
+  };
+
+  splitExpensesInModal = [
+    {
+      user: {
+        userId: 1,
+        name: '',
+        email: ''
+      },
+      expense: {
+        expenseId: 1,
+        description: ''
+      },
+      amount: 10,
+      isPaid: false
+    }
+  ] 
+
+  splitExpensesToBeDeleted = [
+    {
+      splitExpenseId: 1
+    }
+  ]
 
   constructor(
       private _route: ActivatedRoute,
@@ -99,7 +142,6 @@ export class GroupDetailsComponent implements OnInit{
     )
     {
       this.groupId = this._route.snapshot.params['groupId'];
-      // this.expenseForm = new FormGroup({ expenseName: new FormControl(), amount: new FormControl(), date: new FormControl(), upiId: new FormControl(), membersOfExpense: new FormControl(),})
     }
 
   ngOnInit(): void {
@@ -123,6 +165,7 @@ export class GroupDetailsComponent implements OnInit{
     })
     
   }
+
   // get members of expense
   get membersOfExpense(){
     return (this.expenseForm.get('membersOfExpense') as FormArray).controls;
@@ -140,8 +183,6 @@ export class GroupDetailsComponent implements OnInit{
   getGroupMembers(){
       this._groupDetails.getGroupMembers(this.groupId).subscribe((data: any)=>{
       this.groupMembers = data;
-      // console.log(this.groupMembers);
-      console.log("in getGroupMembers");
       this.populateCheckboxes();
     },
     (error)=>{
@@ -158,8 +199,6 @@ export class GroupDetailsComponent implements OnInit{
         let tempDate = this.expenses[i].date;
         this.expenses[i].date = tempDate.substring(0,10);
       }
-      // console.log(this.expenses);
-      console.log("in getGetExpenses");
     },
     (error)=>{
       console.log(error);
@@ -169,14 +208,12 @@ export class GroupDetailsComponent implements OnInit{
   }
   
 
-/**
-   * This method will initiate the expense form
-   */
+
+  // This method will initiate the expense form
 
   initiateExpenseForm(){
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split('T')[0];
-    // console.log(formattedDate);
     
     this.expenseForm = this.formBuilder.group({
       description: ['', [Validators.required]],
@@ -187,7 +224,6 @@ export class GroupDetailsComponent implements OnInit{
       membersOfExpense: new FormArray([], [this.minSelectedCheckboxes(1)])
     });
     this.start = true;
-    console.log("in initiate ExpenseForm");
   }
 
   /**
@@ -245,9 +281,7 @@ export class GroupDetailsComponent implements OnInit{
         if(element === true)
           numberOfInvolvedMembers++;
       });            
-      
-      console.log(this.expenseForm.value.membersOfExpense[0]);
-      
+            
       let size = this.expenseForm.value.membersOfExpense.length;
 
       for(let i=0 ; i<size ; i++){
@@ -256,11 +290,9 @@ export class GroupDetailsComponent implements OnInit{
           this.currentSplitExpense.user.userId = this.groupMembers[i].userId;
           this.currentSplitExpense.expense.expenseId = currentExpenseId;
           this.currentSplitExpense.amount = this.expenseForm.value.amount/(numberOfInvolvedMembers+1);
-
-          // console.log(this.currentSplitExpense);
+          this.currentSplitExpense.isPaid = false;
 
           this._groupDetails.addSplitExpense(this.currentSplitExpense).subscribe((data: any)=>{
-            console.log(data);
           })
         }
       }
@@ -268,19 +300,56 @@ export class GroupDetailsComponent implements OnInit{
   }
 
   // assign expense to Modal
-  assigntransactionToModal(selectedExpense: any){
-    let count = 1;
-    this.expenseSettled = false;
+  assignExpenseToModal(selectedExpense: any){
+    // get expense in Modal
     this.expenseInModal = selectedExpense;
-    if(this.expenseInModal.addedBy.email == this.loggedInUser.email){
-      this.expenseInModal.membersOfExpense.forEach((ele: any)=>{
-        if(ele?.isPaid){
-          count++;
+    
+    // get splitExpenses in Modal
+    this.getSplitExpensesInModal(selectedExpense.expenseId);
+  }
+
+  getSplitExpensesInModal(expenseId: any){
+    this._groupDetails.getSplitExpensesInModal(expenseId).subscribe((data: any)=>{
+      this.splitExpensesInModal = data;
+      
+      let count = 1;
+      this.expenseSettled = false;
+      if(this.expenseInModal.addedBy.email == this.loggedInUser.email){
+        this.splitExpensesInModal.forEach((ele: any)=>{
+          if(ele.isPaid == true){
+            count++;
+          }
+        });
+        if(count == this.splitExpensesInModal.length){    
+          this.expenseSettled = true;
         }
-      });
-      if(count == this.expenseInModal.membersOfExpense.length){
-        this.expenseSettled = true;
       }
+    },
+    (error)=>{
+      Swal.fire("Error!!", "Error in loading expense details", "error");
+      console.log(error);
     }
+    )
+  }
+
+  deleteExpense(expense: any){
+    let expenseId = expense.expenseId;
+    
+    this._groupDetails.getSplitExpensesInModal(expenseId).subscribe((data: any)=>{
+      this.splitExpensesToBeDeleted = data;
+      this._groupDetails.deleteExpense(expenseId).subscribe((data: any)=>{
+        this.expenses = this.expenses.filter((tempExpense)=>tempExpense.expenseId != expenseId)
+      },
+      (error)=>{
+        Swal.fire("Error", "Error in deleting expense", 'error');
+      }
+      )
+      
+      this.splitExpensesToBeDeleted.forEach(splitExpense => {
+        this._groupDetails.deleteSplitExpense(splitExpense.splitExpenseId).subscribe((data: any)=>{
+
+        })
+      });
+    })
   }
 }

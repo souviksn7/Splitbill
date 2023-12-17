@@ -46,4 +46,10 @@ public class SplitExpensesAmongUsersController {
         tempExpense.setExpenseId(expenseId);
         return splitExpensesAmongUsersService.getSplitExpensesByExpense(tempExpense);
     }
+
+    // update split expenses
+    @PutMapping("/")
+    public ResponseEntity<?> updateSplitExpenses(@RequestBody SplitExpensesAmongUsers splitExpensesAmongUsers){
+        return ResponseEntity.ok(splitExpensesAmongUsersService.updateSplitExpenses(splitExpensesAmongUsers));
+    }
 }

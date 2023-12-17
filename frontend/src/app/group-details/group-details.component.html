@@ -34,7 +34,7 @@
       <h4 class="yourExpenseheading">Your Expenses</h4>
       <div
         class="alert alert-success"
-        *ngIf="expenses?.length == 0"
+        *ngIf="expenses.length == 0"
       >
         <strong class="text-bold">
           No Expenses, Add Now
@@ -80,10 +80,16 @@
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                (click)="assigntransactionToModal(expense)"
+                (click)="assignExpenseToModal(expense)"
                 class="btn btn-outline-primary"
               >
                 Check
+              </button>
+              <button 
+                class="bean-button"
+                (click)="deleteExpense(expense)"
+              >
+                <i class="fa-solid fa-trash"></i>
               </button>
             </td>
           </tr>
@@ -245,103 +251,9 @@
     <br />
   </div>
   <hr />
-  <div class="row">
-    <!-- <div class="col-md-7">
-      <div class="table-responsive">
-        <h4 class="allExpensesHeading" #allExpense>
-          All Expenses for this Group
-        </h4>
-        <br />
-        <div class="alert alert-success" *ngIf="allTransactions?.length == 0">
-          <strong class="text-bold">
-            No Expenses, Add Now
-            <i class="fa-regular fa-face-smile fa-2xl"></i
-          ></strong>
-        </div>
-        <table
-          *ngIf="allTransactions?.length > 0"
-          class="table table-bordered table-hover table-striped"
-        >
-          <thead class="tableHeadColor">
-            <tr>
-              <th class="headingsTable fs-5">Expense</th>
-              <th class="headingsTable fs-5">Amount</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr *ngFor="let t of allTransactions">
-              <td>
-                <p class="text-primary text-capitalize fs-5">
-                  {{ t.transactionName }}
-                </p>
-              </td>
-              <td>{{ t.amount | currency: "INR":"symbol":"1.0-0" }}</td>
-            </tr>
-            <tr>
-              <td class="headingsTable">Total</td>
-              <td>
-                {{
-                  totalOfAllTransactions?.amount
-                    | currency: "INR":"symbol":"1.0-0"
-                }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div> -->
-
-    <div class="col-md-5">
-      <br /><br />
-
-      <!-- <div>
-        <div *ngFor="let member of groupMembers" class="col-12">
-            <p class="groupName text-center text-capitalize">
-                {{ member.name }}
-              </p>
-        </div>
-      </div> -->
-
-      <!-- <div class="card">
-        <div class="card-body">
-          <h4 class="allExpensesHeading" #groupMembers>Group Members</h4>
-          <div
-
-            class="alert alert-danger fs-5 text-center"
-            role="alert"
-          >
-            User already Registered
-          </div>
-          <div
-            *ngIf="inviteSend"
-            class="alert alert-success fs-5 text-center"
-            role="alert"
-          >
-            Invite Sent to the Member
-          </div>
-          <table class="table table-bordered table-hover tableTop">
-            <tbody>
-              <tr *ngFor="let member of groupMembers">
-                <td class="text-capitalize">{{ member.name }}</td>
-                <td>
-                  <button
-                    *ngIf="loggedInUser.userEmailId != member.userEmailId"
-                    class="btn btn-success"
-                    (click)="sendInviteMail(member)"
-                    [disabled]=""
-                  >
-                    Invite
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->
-    </div>
-  </div>
 
   <!-- Modal -->
+
   <div
     class="modal fade"
     id="exampleModal"
@@ -349,7 +261,134 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <!-- <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-capitalize" id="exampleModalLabel">
+            {{ expenseInModal.description }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div
+              *ngIf="expenseInModal.addedBy.email == loggedInUser.email"
+            >
+              <div
+                *ngFor="let member of splitExpensesInModal"
+              >
+                <p
+                  *ngIf="member.user.email != loggedInUser.email"
+                >
+                  <i class="fa-solid fa-plus greenPlus"></i>
+                  <span class="text-capitalize">&nbsp;&nbsp;{{member.user.name}}</span>
+
+                  <span *ngIf="!member.isPaid"> will pay you</span>
+                  <span *ngIf="member.isPaid"> paid you</span>
+                  {{
+                    expenseInModal.amount / splitExpensesInModal.length
+                    | currency: "INR":"symbol"
+                  }}
+                </p>
+              </div>
+            </div>
+
+            <br />
+
+            <div
+              *ngFor="let member of splitExpensesInModal"
+            >
+              <div
+                *ngIf="
+                  expenseInModal.addedBy.email != loggedInUser.email &&
+                  member.user.email == loggedInUser.email
+                "
+              >
+                <i class="fa-solid fa-minus redMinus"></i>
+                <span class="fs-5">You</span>
+                <span class="fs-5" *ngIf="!member.isPaid"> have to pay</span>
+                <span class="fs-5" *ngIf="member.isPaid"> paid </span>
+
+                <span class="fs-5">
+                  {{
+                    expenseInModal.amount /
+                    splitExpensesInModal.length
+                      | currency: "INR":"symbol"
+                  }}
+                  to
+                </span>
+                <span class="text-capitalize fs-5">
+                  {{ expenseInModal.addedBy.name }}</span
+                >
+                &nbsp;
+                <span *ngIf="member.isPaid" class="badge text-bg-success">
+                  Settled</span
+                >
+              </div>
+            </div>
+
+            <br />
+            
+            Created By:
+            <span class="text-capitalize">{{
+              expenseInModal.addedBy.name
+            }}</span>
+            <span
+              *ngIf="
+                expenseInModal.addedBy.email ==
+                loggedInUser?.email
+              "
+            >
+              (You)</span
+            >
+            &nbsp;
+            <span *ngIf="expenseSettled==true" class="badge text-bg-success"
+              >Settled</span
+            >
+            <div class="text-secondary" *ngIf="expenseInModal.upiId">
+              UPI ID: {{ expenseInModal.upiId }}
+            </div>
+          </div>
+          <br />
+          <button
+            class="btn btn-primary col-8 offset-2"
+            [routerLink]="'/expense-details/'+ expenseInModal.expenseId"
+            data-bs-dismiss="modal"
+          >
+            More Details
+          </button>
+          <br />
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <!-- <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-capitalize" id="exampleModalLabel">
@@ -468,6 +507,6 @@
           </div>
         </div>
       </div>
-    </div> -->
-  </div>
+    </div>
+  </div> -->
 </div>
