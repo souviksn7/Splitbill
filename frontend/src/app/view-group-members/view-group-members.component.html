@@ -37,12 +37,12 @@
                   
                   <td>{{ member.email }}</td>
                   <td>{{member.phone}}</td>
-                  <td>
+                  <td class="text-center">
                     <button
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       (click)="removeMember(member.userId)"
-                      class="btn btn-outline-primary"
+                      class="btn btn-outline-danger"
                     >
                       Remove
                     </button>

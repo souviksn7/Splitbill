@@ -16,9 +16,9 @@
                 >
                   <div
                     *ngIf="
-                      expenseDetails.addedBy.email ==
-                        loggedInUser.email &&
-                      member.user.email != loggedInUser.email
+                      expenseDetails.addedBy.userId ==
+                        loggedInUser.userId &&
+                      member.user.userId != loggedInUser.userId
                     "
                   >
                     <div *ngIf="member.isPaid">
@@ -56,9 +56,9 @@
   
                   <div
                     *ngIf="
-                      expenseDetails.addedBy.email !=
-                        loggedInUser.email &&
-                      member.user.email == loggedInUser.email
+                      expenseDetails.addedBy.userId !=
+                        loggedInUser.userId &&
+                      member.user.userId == loggedInUser.userId
                     "
                   >
                     <div *ngIf="member.isPaid; fontType">

@@ -73,8 +73,8 @@ export class GroupDetailsComponent implements OnInit{
   ]
 
   loggedInUser = {
-    "userId": 1,
-    "name": "souvik",
+    "userId": 2,
+    "name": "Souvik",
     "email": "svk@gmail.com",
     "password": "456"
    } 
@@ -85,7 +85,8 @@ export class GroupDetailsComponent implements OnInit{
     upiId: "",
     date: "",
     addedBy: {
-      userId: 2
+      userId: 2,
+      name: "Demo"
     },
     group: {
       groupId: 12
@@ -262,7 +263,8 @@ export class GroupDetailsComponent implements OnInit{
     this.expenseDetails.amount = this.expenseForm.value.amount;
     this.expenseDetails.upiId = this.expenseForm.value.upiId;
     this.expenseDetails.date = this.expenseForm.value.date;
-    this.expenseDetails.addedBy = {userId: this.loggedInUser.userId};
+    this.expenseDetails.addedBy.userId = this.loggedInUser.userId;
+    // = {userId: this.loggedInUser.userId, name: this.loggedInUser.name};
     this.expenseDetails.group = {groupId: this.groupId}
   }
 
@@ -275,6 +277,10 @@ export class GroupDetailsComponent implements OnInit{
     this._groupDetails.addExpense(this.expenseDetails).subscribe((data: any)=>{
       currentExpenseId = data.expenseId;
       Swal.fire("Success!!!", "Expense is added successfully", "success")
+      console.log(data);
+      
+      data.date = data.date.substring(0,10);
+      this.expenses.push(data);
 
       let numberOfInvolvedMembers = 0;
       this.expenseForm.value.membersOfExpense.forEach((element:any) => {
@@ -293,9 +299,15 @@ export class GroupDetailsComponent implements OnInit{
           this.currentSplitExpense.isPaid = false;
 
           this._groupDetails.addSplitExpense(this.currentSplitExpense).subscribe((data: any)=>{
+            if(i==size-1){
+              this.initiateExpenseForm();
+              this.populateCheckboxes();
+            }
           })
         }
       }
+
+
     });
   }
 
@@ -333,23 +345,37 @@ export class GroupDetailsComponent implements OnInit{
   }
 
   deleteExpense(expense: any){
-    let expenseId = expense.expenseId;
-    
-    this._groupDetails.getSplitExpensesInModal(expenseId).subscribe((data: any)=>{
-      this.splitExpensesToBeDeleted = data;
-      this._groupDetails.deleteExpense(expenseId).subscribe((data: any)=>{
-        this.expenses = this.expenses.filter((tempExpense)=>tempExpense.expenseId != expenseId)
-      },
-      (error)=>{
-        Swal.fire("Error", "Error in deleting expense", 'error');
-      }
-      )
-      
-      this.splitExpensesToBeDeleted.forEach(splitExpense => {
-        this._groupDetails.deleteSplitExpense(splitExpense.splitExpenseId).subscribe((data: any)=>{
 
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        // Perform your delete action here
+        let expenseId = expense.expenseId;
+    
+        this._groupDetails.getSplitExpensesInModal(expenseId).subscribe((data: any)=>{
+          this.splitExpensesToBeDeleted = data;
+          this.splitExpensesToBeDeleted.forEach(splitExpense => {
+            this._groupDetails.deleteSplitExpense(splitExpense.splitExpenseId).subscribe((data: any)=>{})
+          });
+          this._groupDetails.deleteExpense(expenseId).subscribe((data: any)=>{
+            this.expenses = this.expenses.filter((tempExpense)=>tempExpense.expenseId != expenseId)
+            Swal.fire('Deleted!', 'Expense has been deleted.', 'success');
+          },
+          (error)=>{
+            Swal.fire("Error", "Error in deleting expense", 'error');
+          }
+          )
         })
-      });
-    })
+      }
+    });
+
   }
 }
