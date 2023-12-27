@@ -26,9 +26,6 @@ public class Expense {
     @Column(name = "amount")
     private float amount;
 
-    @Column(name = "upi_id")
-    private String upiId;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payer_id")
 //    @JsonIgnore
@@ -73,11 +70,6 @@ public class Expense {
 
     // getter and setter methods
 
-    public Long getExpenseId() {
-        return expenseId;
-    }
 
-    public void setExpenseId(Long expenseId) {
-        this.expenseId = expenseId;
-    }
+
 }

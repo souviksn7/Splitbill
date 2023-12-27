@@ -1,6 +1,5 @@
 package com.splitbill.backend.repo;
 
-import com.splitbill.backend.model.Comment;
 import com.splitbill.backend.model.Expense;
 import com.splitbill.backend.model.SplitExpensesAmongUsers;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { GroupDetailsService } from '../services/group-details.service';
 import Swal from 'sweetalert2';
 import { ExpenseDetailsService } from '../services/expense-details.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-expense-details',
@@ -48,7 +49,7 @@ export class ExpenseDetailsComponent implements OnInit{
   ] 
 
   loggedInUser = {
-    "userId": 2,
+    "userId": 1,
     "name": "souvik",
     "email": "svk@gmail.com",
     "password": "456"
@@ -74,7 +75,7 @@ export class ExpenseDetailsComponent implements OnInit{
 
 
 
-  constructor(private _route: ActivatedRoute, private _groupDetails: GroupDetailsService, private _expenseDetails: ExpenseDetailsService){
+  constructor(private _route: ActivatedRoute, private _groupDetails: GroupDetailsService, private _expenseDetails: ExpenseDetailsService, private _login: LoginService){
     this.expenseId = this._route.snapshot.params['expenseId'];
 
   }
@@ -82,6 +83,13 @@ export class ExpenseDetailsComponent implements OnInit{
     this.getExpenseDetails(this.expenseId);
     this.getSplitExpensesInModal(this.expenseId);
     this.getAllCommentsOfAnExpense(this.expenseId);
+    this.getCurrentUser();
+  }
+
+  private getCurrentUser(){
+    this._login.getCurrentUser().subscribe((data: any)=>{
+      this.loggedInUser = data;
+    })
   }
 
   getExpenseDetails(expenseId: any){

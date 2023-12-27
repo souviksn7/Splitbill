@@ -67,3 +67,55 @@ g {
     box-shadow: inset 0px 0px 0px 30px #7ac142;
   }
 }
+
+ /* Reset default margin and padding for the page */
+
+
+/* Style the navigation container */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the button that triggers the dropdown */
+.dropdown-button {
+  background-color: #102d59f1; 
+  color: white; /* White text color */
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style the dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9; /* Light gray background color */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow */
+  z-index: 1; /* Position the dropdown above other elements */
+  min-width: 160px; /* Adjust as needed */
+  right: 0; /* Align with the right edge */
+}
+
+/* Style the dropdown items */
+.dropdown-item {
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  color: #333; /* Text color */
+}
+
+/* Change color on hover */
+.dropdown-item:hover {
+  background-color: #ddd; /* Light gray background color on hover */
+}
+
+/* Show the dropdown content when the button is clicked (focused) */
+.dropdown-container:focus-within .dropdown-content {
+  display: block;
+}
+
+/* Style the dropdown icon */
+.dropdown-icon {
+  margin-left: 5px;
+}

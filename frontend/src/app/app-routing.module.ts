@@ -8,6 +8,8 @@ import { AddGroupComponent } from './add-group/add-group.component';
 import { GroupDetailsComponent } from './group-details/group-details.component';
 import { ViewGroupMembersComponent } from './view-group-members/view-group-members.component';
 import { ExpenseDetailsComponent } from './expense-details/expense-details.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -31,7 +33,9 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'add-group', component: AddGroupComponent},
-  {path: 'expense-details/:expenseId', component: ExpenseDetailsComponent}
+  {path: 'expense-details/:expenseId', component: ExpenseDetailsComponent},
+  {path: 'profile', component: ProfileComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent}
 ];
 
 @NgModule({

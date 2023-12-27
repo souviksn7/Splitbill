@@ -19,6 +19,30 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input'
 import { MatNativeDateModule } from '@angular/material/core';
 import { ExpenseDetailsComponent } from './expense-details/expense-details.component';
+import { MatCardModule } from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProfileComponent } from './profile/profile.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import {  NgxUiLoaderModule,  NgxUiLoaderConfig,  SPINNER,  PB_DIRECTION,} from 'ngx-ui-loader';
+import { ToastrModule } from 'ngx-toastr';
+import { MatButtonModule } from '@angular/material/button';
+
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  text: 'Loading..',
+  textColor: '#FFFFFF',
+  textPosition: 'center-center',
+  pbColor: '#0069d9',
+  bgsColor: '#0069d9',
+  fgsColor: '#0069d9',
+  fgsType: SPINNER.threeStrings,
+  fgsSize: 100,
+  pbDirection: PB_DIRECTION.leftToRight,
+  pbThickness: 5,
+};
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +54,9 @@ import { ExpenseDetailsComponent } from './expense-details/expense-details.compo
     GroupDetailsComponent,
     ViewGroupMembersComponent,
     ExpenseDetailsComponent,
+    ProfileComponent,
+    ForgotPasswordComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -40,7 +67,18 @@ import { ExpenseDetailsComponent } from './expense-details/expense-details.compo
     BrowserAnimationsModule,
     MatDatepickerModule,
     MatInputModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      closeButton: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

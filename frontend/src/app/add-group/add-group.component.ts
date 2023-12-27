@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../services/groups.service';
 import Swal from 'sweetalert2';
+import { Route, Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-add-group',
@@ -14,7 +16,9 @@ export class AddGroupComponent implements OnInit {
   }
 
   constructor(
-    private _group: GroupsService
+    private _group: GroupsService,
+    private router: Router,
+    private _login: LoginService
   ){}
 
   ngOnInit(): void {
@@ -26,7 +30,7 @@ export class AddGroupComponent implements OnInit {
     
   }
 
-  formSubmit(){
+  addGroup(){
     console.log("form submit called");
     
 
@@ -38,6 +42,11 @@ export class AddGroupComponent implements OnInit {
     
     this._group.addGroup(this.group).subscribe((data: any)=>{
       Swal.fire('Success !!', 'Group is added successfully', 'success');
+
+      // Get loggedIn user 
+
+      this.router.navigate(['groups']);
+
     },
     (error)=>{
       console.log(error);

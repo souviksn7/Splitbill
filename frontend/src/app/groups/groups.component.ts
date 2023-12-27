@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GroupsService } from '../services/groups.service';
 import Swal from 'sweetalert2';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-groups',
@@ -17,16 +18,22 @@ export class GroupsComponent implements OnInit {
     }
   ];
   groupCreated = false;
-  loggedInUser: any;
+  loggedInUser = {
+    userId: 1,
+    name: "Demo Name"
+  };
 
-  constructor(private _groups: GroupsService){
-
+  constructor(private _groups: GroupsService, private _login: LoginService){
   }
 
   ngOnInit(): void {
-      this._groups.groups().subscribe((data:any)=>{
-        // success
+      this.getMyGroups();
+  }
 
+  getMyGroups(){
+    this._login.getCurrentUser().subscribe((data: any)=>{
+      this.loggedInUser = data;
+      this._groups.getMyGroups(this.loggedInUser.userId).subscribe((data:any)=>{
         this.partOfGroups=data;
         console.log(this.partOfGroups); 
       },
@@ -35,6 +42,7 @@ export class GroupsComponent implements OnInit {
         Swal.fire("Error !!", "Error in loading data", "error");
       }
       )
+    }) 
   }
 
   createGroup(){

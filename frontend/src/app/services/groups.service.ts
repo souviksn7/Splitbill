@@ -11,8 +11,8 @@ export class GroupsService {
   constructor(private _http: HttpClient) { }
 
   // load all the groups
-  public groups(){
-    return this._http.get(`${baseUrl}/group/all`);
+  public getMyGroups(userId: any){
+    return this._http.get(`${baseUrl}/group/user/${userId}`);
   }
 
   // add new group

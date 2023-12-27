@@ -3,11 +3,10 @@ package com.splitbill.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "users")
-public class User{
+public class User  implements UserDetails {
     // Properties with Column name
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +30,6 @@ public class User{
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "phone")
-    private Integer phone;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
@@ -87,12 +83,40 @@ public class User{
     // add convenience method to add method
 
 
-    public Long getUserId() {
-        return userId;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

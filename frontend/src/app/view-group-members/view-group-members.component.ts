@@ -62,6 +62,8 @@ export class ViewGroupMembersComponent implements OnInit {
 
       this._user.getAllUsers().subscribe((data:any)=>{
         this.users = data;
+        console.log(this.users);
+        
         this.AllUsers = data;
         // console.log(this.users);
 

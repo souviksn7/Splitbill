@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Service
@@ -24,17 +23,17 @@ public class SplitExpensesAmongUsersServiceImpl implements SplitExpensesAmongUse
 
     @Override
     public Set<SplitExpensesAmongUsers> findAll() {
-        return new LinkedHashSet<>(splitExpensesAmongUsersRepository.findAll());
-    }
-
-    @Override
-    public void deleteSplitExpenseById(Long splitExpenseId) {
-        splitExpensesAmongUsersRepository.deleteById(splitExpenseId);
+        return new HashSet<>(splitExpensesAmongUsersRepository.findAll());
     }
 
     @Override
     public SplitExpensesAmongUsers addSplitExpenses(SplitExpensesAmongUsers splitExpensesAmongUsers) {
         return splitExpensesAmongUsersRepository.save(splitExpensesAmongUsers);
+    }
+
+    @Override
+    public void deleteSplitExpenseById(Long splitExpenseId) {
+        splitExpensesAmongUsersRepository.deleteById(splitExpenseId);
     }
 
     @Override

@@ -11,11 +11,11 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "split_expenses_among_users")
-public class SplitExpensesAmongUsers{
+public class SplitExpensesAmongUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "split_expense_id")
-    private Integer splitExpenseId;
+    private Long splitExpenseId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

@@ -14,6 +14,7 @@ import {
 import { __values } from 'tslib';
 import { forkJoin } from 'rxjs';
 import { GroupsService } from '../services/groups.service';
+import { LoginService } from '../services/login.service';
 
 
 @Component({
@@ -73,7 +74,7 @@ export class GroupDetailsComponent implements OnInit{
   ]
 
   loggedInUser = {
-    "userId": 2,
+    "userId": 1,
     "name": "Souvik",
     "email": "svk@gmail.com",
     "password": "456"
@@ -140,6 +141,7 @@ export class GroupDetailsComponent implements OnInit{
       private _route: ActivatedRoute,
       private _groupDetails: GroupDetailsService,
       private formBuilder: FormBuilder,
+      private _login: LoginService
     )
     {
       this.groupId = this._route.snapshot.params['groupId'];
@@ -153,7 +155,16 @@ export class GroupDetailsComponent implements OnInit{
     
     this.getExpenses(); 
 
-    this.initiateExpenseForm();    
+    this.initiateExpenseForm();   
+    
+    this.getCurrentUser();
+    
+  }
+
+  private getCurrentUser(){
+    this._login.getCurrentUser().subscribe((data: any)=>{
+      this.loggedInUser = data;
+    })
   }
 
   // get group details

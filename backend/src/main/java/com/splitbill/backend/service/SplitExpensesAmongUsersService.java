@@ -17,4 +17,5 @@ public interface SplitExpensesAmongUsersService {
     public Set<SplitExpensesAmongUsers> getSplitExpensesByExpense(Expense tempExpense);
 
     public SplitExpensesAmongUsers updateSplitExpenses(SplitExpensesAmongUsers splitExpensesAmongUsers);
+
 }

@@ -1,0 +1,128 @@
+
+
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <!-- Profile Image -->
+        <img src="https://placekitten.com/200/200" alt="Profile Image" class="img-fluid rounded-circle profile-image">
+      </div>
+      <div class="col-md-8">
+        <!-- Profile Details -->
+        <h2 class="mb-4">Your Profile</h2>
+        <div class="card mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="profile-details">
+              <strong>Name:</strong> John Doe
+            </div>
+            <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editNameModal"></i>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="profile-details">
+              <strong>Email:</strong> john.doe@example.com
+            </div>
+            <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editEmailModal"></i>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="profile-details">
+              <strong>Phone:</strong> (555) 123-4567
+            </div>
+            <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editPhoneModal"></i>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="profile-details">
+              <strong>Password:</strong> ********
+            </div>
+            <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editPasswordModal"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modals -->
+  <!-- You can customize these modals based on your requirements -->
+  <div class="modal" id="editNameModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Name</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <input type="text" class="form-control" placeholder="Enter new name">
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="editEmailModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Email</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <input type="email" class="form-control" placeholder="Enter new email">
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="editPhoneModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Phone</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <input type="number" class="form-control" placeholder="Enter new number">
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="editPasswordModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Password</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <input type="password" class="form-control" placeholder="Enter new password">
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

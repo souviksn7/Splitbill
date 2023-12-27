@@ -25,35 +25,39 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="_login.isLoggedIn() == true">
           <a class="nav-link active" [routerLink]="['/']">Home</a>
         </li>
-
-        <li class="nav-item">
-          <a class="nav-link active"  [routerLink]="['/groups']">Groups</a>
+      
+        <li class="nav-item" *ngIf="_login.isLoggedIn() == true">
+          <a class="nav-link active" [routerLink]="['/groups']">Groups</a>
         </li>
-
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="_login.isLoggedIn() == false">
           <a class="nav-link active" [routerLink]="['/login']">Login</a>
         </li>
-
-        <li class="nav-item">
-          <a class="nav-link active"  [routerLink]="['/register']">Register</a>
+      
+        <li class="nav-item" *ngIf="_login.isLoggedIn() == false">
+          <a class="nav-link active" [routerLink]="['/register']">Register</a>
         </li>
+        
       </ul>
-
-      <!-- <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a  class="nav-link active text-capitalize">Hi, </a>
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link active"          
-          >
-            Logout
-          </a>
-        </li>
-      </ul> -->
+      
+      <div class="dropdown-container ms-auto" *ngIf="_login.isLoggedIn() == true">
+      
+        <button class="dropdown-button">
+          <span>{{loggedInUser.name}}</span>
+          <span class="dropdown-icon">&#9660;</span>
+        </button>
+      
+        <div class="dropdown-content">
+          <!-- Dropdown items -->
+          <a href="#" class="dropdown-item" [routerLink]="['/profile']">Your account</a>
+          <a href="#" class="dropdown-item" (click)="logoutUser()">Logout</a>
+        </div>
+      
+      </div>
+      
+      
     </div>
 
   </div>

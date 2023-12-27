@@ -1,0 +1,19 @@
+.full-width{
+    width: 80%;
+}
+
+/* .hint{
+    color: red;
+} */
+
+.spacing{
+    margin-bottom: 100 px;
+}
+
+.marginCard{
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 3%;
+}

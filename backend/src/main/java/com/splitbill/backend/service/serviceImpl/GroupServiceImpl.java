@@ -59,6 +59,7 @@ public class GroupServiceImpl implements GroupService {
         return groupRepository.save(group);
     }
 
+
     @Override
     public Set<User> removeUserFromGroup(Long groupId, Long userId) {
         Set<User> userSet = null;
@@ -70,4 +71,7 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.save(group);
         return userRepository.findByGroups(group);
     }
+
+
+
 }

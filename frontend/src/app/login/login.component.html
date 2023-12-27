@@ -1,82 +1,68 @@
-<section class="vh-100">
-    <div class="container-fluid h-custom">
-      <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-md-2 col-lg-6 col-xl-5">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-            class="img-fluid"
-            alt="Sample image"
-          />
-        </div>
-        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-          <form>
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <label class="form-label" for="userEmailId">Email address</label>
-  
-              <input
-                type="email"
-                id="userEmailId"
-                class="form-control form-control-lg"
-                placeholder="Enter a valid email address"
-                formControlName="userEmailId"
-              />
-              <span
-                class="text-danger"
-                >Email must be a valid email address</span
-              >
-              <div id="userEmailId" class="form-text">
-                We'll never share your email with anyone else.
+<div class="bootstrap-wtapper">
+
+  <div class="container">
+
+      <div class="row">
+
+          <div class="">
+            <mat-card class="marginCard">
+              <div class="container text-center mt20">
+                  <img src="../../../assets/logo.png" alt="">
               </div>
-            </div>
-  
-            <!-- Password input -->
-            <div class="form-outline mb-3">
-              <label class="form-label" for="password">Password</label>
-  
-              <input
-                type="password"
-                id="password"
-                class="form-control form-control-lg"
-                placeholder="Enter password"
-                formControlName="password"
-              />
-              <span
-                class="text-danger"
-                >Passsword is required</span
-              >
-            </div>
-  
-            <div class="text-center text-lg-start mt-4 pt-2">
-              <button
-                type="button"
-                class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem"
-              >
-                Login
-              </button>
-              <p class="small fw-bold mt-2 pt-1 mb-0">
-                Don't have an account?
-                <a class="link-danger" [routerLink]="['/register']">Register</a>
-              </p>
-            </div>
-          </form>
-          <!-- <div *ngIf="wrongPassword">
-            <h5 class="text-danger text-center"></h5>
-            <div class="alert alert-danger text-center" role="alert">
-              Password is wrong, try again
-            </div>
+              
+              
+              <h1 class="text-center">Login here !!</h1>
+
+              <!-- {{user | json}} -->
+
+              <form (ngSubmit)="formSubmit()" class="text-center mt20 mb20"> 
+              
+                    
+                    <!-- username field -->
+                    <p>
+                      <mat-form-field  class= "full-width" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input 
+                        [(ngModel)] = "loginData.email"
+                        required       
+                        name="Email"
+                        matInput 
+                        placeholder="Enter here"
+                        />
+                      </mat-form-field>
+                    </p>
+
+                     <!-- Password field -->
+                    <p>
+                      <mat-form-field  class= "full-width" appearance="outline">
+                          <mat-label>Password</mat-label>
+                          <input 
+                          [(ngModel)] = "loginData.password"
+                          required
+                          name="password"
+                          type="password" matInput placeholder="Enter here">
+                        </mat-form-field>
+                    </p>
+
+                    <div class="container">
+
+                      <button class = "spacing" type="submit" mat-raised-button color="primary">Login</button>
+                      <button class = "spacing" style="margin-left: 20px" mat-raised-button color="accent"(click)="clear()">Clear</button>
+
+                    </div>
+
+              </form>
+
+              <mat-card-actions>
+                <button mat-button color="accent" routerLink="/forgot-password"> Forgot password ? </button>
+              </mat-card-actions>
+            </mat-card>
+          
+
+            
           </div>
-          <div *ngIf="userNotFound" class="text-success">
-            <div class="alert alert-warning text-center" role="alert">
-              <h6>User Not Found, Register Now</h6>
-              <button class="btn btn-primary col-8" [routerLink]="['/register']">
-                Register
-              </button>
-            </div>
-          </div> -->
-        </div>
       </div>
-    </div>
-  </section>
-  
+
+  </div>
+
+</div>

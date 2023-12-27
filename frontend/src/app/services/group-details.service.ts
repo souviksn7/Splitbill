@@ -50,4 +50,6 @@ export class GroupDetailsService {
   public deleteSplitExpense(splitExpenseId: any){
     return this._http.delete(`${baseUrl}/splitExpenses/${splitExpenseId}`)
   }
+
+  
 }

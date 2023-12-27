@@ -13,4 +13,14 @@ export class UserService {
   public getAllUsers(){
     return this._http.get(`${baseUrl}/user/all`);
   }
+
+  // load all users
+  public getCurrentUser(userId: any){
+    return this._http.get(`${baseUrl}/user/${userId}`);
+  }
+
+  // add user
+  public addUser(user: any){
+    return this._http.post(`${baseUrl}/user/`,user);
+  }
 }

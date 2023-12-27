@@ -49,23 +49,22 @@ public class GroupController {
         return ResponseEntity.ok(groupService.updateGroup(tempGroup));
     }
 
-    // Assign a user to a group
     @PutMapping("/{groupId}/addUser/{userId}")
     public Group assignUserToGroup(@PathVariable Long groupId, @PathVariable Long userId){
         return groupService.assignUserToGroup(groupId, userId);
+    }
+
+    // get all groups of a user using userId
+    @GetMapping("/user/{userId}")
+    public Set<Group> getAllGroupsOfAUser(@PathVariable("userId") Long tempUserId){
+        User user = new User();
+        user.setUserId(tempUserId);
+        return this.groupService.getAllGroupsOfAUser(user);
     }
 
     // Remove a user form a group
     @PutMapping("/{groupId}/removeUser/{userId}")
     public Set<User> removeUserFromGroup(@PathVariable Long groupId, @PathVariable Long userId){
         return groupService.removeUserFromGroup(groupId, userId);
-    }
-
-    // get all groups of a user using groupId
-    @GetMapping("/user/{userId}")
-    public Set<Group> getAllGroupsOfAUser(@PathVariable("userId") Long tempUserId){
-        User user = new User();
-        user.setUserId(tempUserId);
-        return this.groupService.getAllGroupsOfAUser(user);
     }
 }
