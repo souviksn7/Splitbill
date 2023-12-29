@@ -181,8 +181,6 @@
             </div>
 
             
-              
-            
             <div class="mb-3">
               <label for="upiId" class="form-label">UPI Id </label>
               <span id="userEmailId" class="form-text"> (This is optional) </span>
@@ -193,11 +191,27 @@
                 formControlName="upiId"
               />
             </div>
+
+            <h6>Choose Split Options:</h6>
+            
+            <div>
+
+              <button type="button" class="btn btn-outline-primary w-23" (click)="splitEquallySelected()"><i class="far fa-equals pr-2" aria-hidden="true"></i> &nbsp;Equally</button>
+              &nbsp;
+              <button type="button" class="btn btn-outline-primary w-23" (click)="splitUnequallySelected()">&ne; &nbsp;Unequally</button>
+              &nbsp;
+              <button type="button" class="btn btn-outline-primary w-23" (click)="splitByPercentSelected()"><i class="fas fa-percentage pr-2" aria-hidden="true"></i>&nbsp;Percent</button>
+              &nbsp;
+              <button type="button" class="btn btn-outline-primary w-23" (click)="splitBySharesSelected()"><i class="fas fa-bars pr-2" aria-hidden="true"></i>&nbsp; Shares</button>
+          
+            </div>
+
+            <br>
+
             Members Involved:
-            <!-- <div id="defaultMemberMessage" class="form-text">
-              You are by default included in this expense.
-            </div> -->
-            <div formArrayName="membersOfExpense">
+
+            <!-- Split expense equaly  -->
+            <div formArrayName="membersOfExpense" *ngIf="splitEqually == true">
               <div
                 class="form-check"
                 *ngFor="
@@ -217,6 +231,28 @@
                 </label>
               </div>
             </div>
+
+            <!-- Splpit expense unequally -->
+
+            <!-- <div formArrayName="splitExpenseUnequally" *ngIf="splitUnequally == true">
+              <div
+                *ngFor="
+                  let member of splitExpenseUnequally;
+                  let i = index
+                "
+              >
+                <label class="form-check-label">
+                  <span *ngIf="groupMembers[i].userId == loggedInUser.userId" class="text-capitalize">
+                    You
+                  </span>
+                  <span *ngIf="groupMembers[i].userId != loggedInUser.userId" class="text-capitalize">
+                    {{ groupMembers[i].name }}
+                  </span>
+                  <input type="number" [formControlName]="i">
+                </label>
+              </div>
+            </div> -->
+
             
             <span
               class="text-danger"

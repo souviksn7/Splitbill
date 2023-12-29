@@ -137,6 +137,19 @@ export class GroupDetailsComponent implements OnInit{
     }
   ]
 
+  // splitExpenseUnequally = [
+  //     {
+  //       "userId": 1,
+  //       "name": "Demo",
+  //       "amount": 0
+  //     }
+  // ]
+
+  splitEqually = false;
+  splitUnequally = false;
+  splitByPercent = false;
+  splitByShares = false;
+
   constructor(
       private _route: ActivatedRoute,
       private _groupDetails: GroupDetailsService,
@@ -183,19 +196,33 @@ export class GroupDetailsComponent implements OnInit{
     return (this.expenseForm.get('membersOfExpense') as FormArray).controls;
   }
 
+  // get splitExpenseUnequally(){
+  //   return (this.expenseForm.get('splitExpenseUnequally') as FormArray).controls;
+  // }
+
   private populateCheckboxes(){
     this.groupMembers.forEach(()=>{
       const control = this.formBuilder.control(true); // Initialize as checked
       (this.expenseForm.get('membersOfExpense') as FormArray).push(control);
     });
-
   }
+
+  // private populateSplitExpenseUnequally(){
+  //   this.groupMembers.forEach(()=>{
+  //     const control = this.formBuilder.control(0); // Initialize as 0
+  //     (this.expenseForm.get('splitExpenseUnequally') as FormArray).push(control);
+  //   });
+  // }
 
   // Get group members
   getGroupMembers(){
       this._groupDetails.getGroupMembers(this.groupId).subscribe((data: any)=>{
       this.groupMembers = data;
+      // this.splitExpenseUnequally = data;
+      // console.log("split Expense equally " + this.splitExpenseUnequally[2].amount);
+
       this.populateCheckboxes();
+      // this.populateSplitExpenseUnequally();
     },
     (error)=>{
       console.log(error);
@@ -260,7 +287,6 @@ export class GroupDetailsComponent implements OnInit{
       const selectedCount = (formArray as FormArray).controls
         .map(control => control.value)
         .reduce((prev, next) => (next ? prev + 1 : prev), 0);
-  
       return selectedCount >= min ? null : { minSelected: true };
     };
   }
@@ -275,7 +301,6 @@ export class GroupDetailsComponent implements OnInit{
     this.expenseDetails.upiId = this.expenseForm.value.upiId;
     this.expenseDetails.date = this.expenseForm.value.date;
     this.expenseDetails.addedBy.userId = this.loggedInUser.userId;
-    // = {userId: this.loggedInUser.userId, name: this.loggedInUser.name};
     this.expenseDetails.group = {groupId: this.groupId}
   }
 
@@ -387,6 +412,34 @@ export class GroupDetailsComponent implements OnInit{
         })
       }
     });
-
   }
+
+  splitEquallySelected(){
+    this.splitEqually = true;
+    this.splitUnequally = false;
+    this.splitByPercent = false;
+    this.splitByShares = false;
+  }
+
+  splitUnequallySelected(){
+    this.splitUnequally = true;
+    this.splitEqually = false;
+    this.splitByPercent = false;
+    this.splitByShares = false;
+  };
+
+  splitByPercentSelected(){
+    this.splitByPercent = true;
+    this.splitEqually = false;
+    this.splitUnequally = false;
+    this.splitByShares = false;
+  };
+  splitBySharesSelected(){
+    this.splitByShares = true;
+    this.splitEqually = false;
+    this.splitUnequally = false;
+    this.splitByPercent = false;
+  }
+
+
 }

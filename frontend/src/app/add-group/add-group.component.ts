@@ -22,8 +22,22 @@ export class AddGroupComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-      
+      this.getLoggedInUser();
   }
+
+  loggedInUser = {
+    "userId": 1,
+    "name": "Souvik",
+    "email": "svk@gmail.com",
+    "password": "456"
+   } 
+
+
+   getLoggedInUser(){
+      this._login.getCurrentUser().subscribe((data: any)=>{
+        this.loggedInUser = data;
+      })
+   }
 
   demoFunction(){
     console.log("save working");
@@ -40,9 +54,12 @@ export class AddGroupComponent implements OnInit {
 
     //all done
     
-    this._group.addGroup(this.group).subscribe((data: any)=>{
+    this._group.addGroup(this.group).subscribe((newGroup: any)=>{
       Swal.fire('Success !!', 'Group is added successfully', 'success');
-
+      
+      this._group.assignMemberToGroup(newGroup.groupId, this.loggedInUser.userId).subscribe((data: any)=>{
+        
+      })
       // Get loggedIn user 
 
       this.router.navigate(['groups']);

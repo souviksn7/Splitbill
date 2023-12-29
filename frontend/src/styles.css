@@ -8,3 +8,7 @@ body {background-color: #f0f8ff !important
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.w-23{
+    width: 23%;
+}

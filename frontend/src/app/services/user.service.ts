@@ -14,7 +14,7 @@ export class UserService {
     return this._http.get(`${baseUrl}/user/all`);
   }
 
-  // load all users
+  // load user
   public getCurrentUser(userId: any){
     return this._http.get(`${baseUrl}/user/${userId}`);
   }
@@ -22,5 +22,10 @@ export class UserService {
   // add user
   public addUser(user: any){
     return this._http.post(`${baseUrl}/user/`,user);
+  }
+
+  // update user
+  public updateUser(user: any){
+    return this._http.put(`${baseUrl}/user/`, user);
   }
 }

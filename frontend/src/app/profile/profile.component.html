@@ -12,7 +12,7 @@
         <div class="card mb-3">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div class="profile-details">
-              <strong>Name:</strong> John Doe
+              <strong>Name:</strong> {{loggedInUser.name}}
             </div>
             <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editNameModal"></i>
           </div>
@@ -20,7 +20,7 @@
         <div class="card mb-3">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div class="profile-details">
-              <strong>Email:</strong> john.doe@example.com
+              <strong>Email:</strong> {{loggedInUser.email}}
             </div>
             <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editEmailModal"></i>
           </div>
@@ -28,7 +28,7 @@
         <div class="card mb-3">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div class="profile-details">
-              <strong>Phone:</strong> (555) 123-4567
+              <strong>Phone:</strong> {{loggedInUser.phone}}
             </div>
             <i class="fas fa-pencil-alt edit-icon" data-toggle="modal" data-target="#editPhoneModal"></i>
           </div>
@@ -57,11 +57,11 @@
         </div>
         <!-- Modal Body -->
         <div class="modal-body">
-          <input type="text" class="form-control" placeholder="Enter new name">
+          <input type="text" class="form-control" placeholder="Enter new name" [(ngModel)] = "newName">
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeName()">Save Changes</button>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeEmail()">Save Changes</button>
         </div>
       </div>
     </div>
@@ -97,11 +97,11 @@
         </div>
         <!-- Modal Body -->
         <div class="modal-body">
-          <input type="number" class="form-control" placeholder="Enter new number">
+          <input type="number" class="form-control" placeholder="Enter new number" [(ngModel)] = "newPhone">
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changePhone()">Save Changes</button>
         </div>
       </div>
     </div>
@@ -119,9 +119,13 @@
         <div class="modal-body">
           <input type="password" class="form-control" placeholder="Enter new password">
         </div>
+
+        <div class="modal-body">
+            <input type="password" class="form-control" placeholder="Confirm new password">
+          </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changePassword()">Save Changes</button>
         </div>
       </div>
     </div>
