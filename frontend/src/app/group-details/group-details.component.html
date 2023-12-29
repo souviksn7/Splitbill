@@ -1,33 +1,6 @@
 <br />
 <div class="container">
   <div class="row">
-    <!-- <div class="card topcard">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-3 text-center vl">
-            <h5>Important Links</h5>
-          </div>
-
-          <div class="col-md-3 text-center vl">
-            <a class="impLinks"
-              >Add an Expense</a
-            >
-          </div>
-
-          <div class="col-md-3 text-center vl">
-            <a class="impLinks">
-              All Expenses of this Group
-            </a>
-          </div>
-
-          <div class="col-md-3 text-center vl">
-            <a class="impLinks">
-              Group Members</a
-            >
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="col-md-7 col-sm-12 table-responsive">
       <div class="d-flex justify-content-between">
         <div><h2 class="yourExpenseheading">{{currentGroup.groupName}}</h2></div>
@@ -156,6 +129,7 @@
                 type="number"
                 class="form-control"
                 id="amount"
+                [(ngModel)]="amountLeft"
                 formControlName="amount"
               />
               
@@ -208,14 +182,16 @@
 
             <br>
 
-            Members Involved:
+            
 
             <!-- Split expense equaly  -->
-            <div formArrayName="membersOfExpense" *ngIf="splitEqually == true">
+            <div formArrayName="splitExpenseEqually" *ngIf="splitEqually == true">
+              <h5>Split equally</h5>
+              <hr style="size: 10px;">
               <div
                 class="form-check"
                 *ngFor="
-                  let checkbox of membersOfExpense;
+                  let checkbox of splitExpenseEqually;
                   let i = index
                 "
               >
@@ -228,41 +204,139 @@
                   <span *ngIf="groupMembers[i].userId != loggedInUser.userId" class="text-capitalize">
                     {{ groupMembers[i].name }}
                   </span>
+                  
                 </label>
+                <hr style="margin: 0.5rem 0;">
               </div>
             </div>
 
             <!-- Splpit expense unequally -->
 
-            <!-- <div formArrayName="splitExpenseUnequally" *ngIf="splitUnequally == true">
+            <div formArrayName="splitExpenseUnequally" *ngIf="splitUnequally == true">
+              <h5>Split by exact amounts</h5>
+              <hr style="size: 10px;">
               <div
                 *ngFor="
                   let member of splitExpenseUnequally;
                   let i = index
                 "
               >
-                <label class="form-check-label">
-                  <span *ngIf="groupMembers[i].userId == loggedInUser.userId" class="text-capitalize">
-                    You
+                <label class="form-check-label d-flex justify-content-between">
+                  <span class="text-capitalize">
+                    <p *ngIf="groupMembers[i].userId == loggedInUser.userId">You</p>
+                    <p *ngIf="groupMembers[i].userId != loggedInUser.userId">{{ groupMembers[i].name }}</p>
                   </span>
-                  <span *ngIf="groupMembers[i].userId != loggedInUser.userId" class="text-capitalize">
-                    {{ groupMembers[i].name }}
-                  </span>
-                  <input type="number" [formControlName]="i">
+
+                  <label>
+                    <input type="number" [formControlName]="i" style="width: 80px">
+                  </label>
                 </label>
+                <hr style="margin: 0.3rem 0;">
+                
               </div>
-            </div> -->
+               <!-- Total and remaining Amount -->
+
+              <!-- <label class="form-check-label d-flex justify-content-between">
+                  <h5 class="text-capitalize">
+                    Total
+                  </h5>
+                  <div>
+                    <textarea class="underline-textarea"></textarea>
+                    <p>&#8377; {{amountLeft}}&nbsp;left</p>
+                  </div>
+                
+              </label> -->
+
+            </div>
+
+            <!-- Split expense by percentage -->
+
+            <div formArrayName="splitExpenseByPercentage" *ngIf="splitByPercent == true">
+              <h5>Split by percentages</h5>
+              <hr style="size: 10px;">
+              <div
+                *ngFor="
+                  let member of splitExpenseByPercentage;
+                  let i = index
+                "
+              >
+                <label class="form-check-label d-flex justify-content-between">
+                  <span class="text-capitalize">
+                    <p *ngIf="groupMembers[i].userId == loggedInUser.userId">You</p>
+                    <p *ngIf="groupMembers[i].userId != loggedInUser.userId">{{ groupMembers[i].name }}</p>
+                  </span>
+
+                  <label>
+                    <input type="number" [formControlName]="i" style="width: 80px"> %
+                  </label>
+                </label>
+                <hr style="margin: 0.3rem 0;">
+                
+              </div>
+              <!-- Total and remaining Amount -->
+
+              <!-- <label class="form-check-label d-flex justify-content-between">
+                <h5 class="text-capitalize">
+                  Total
+                </h5>
+                <div>
+                  <textarea class="underline-textarea"></textarea>
+                  <p>{{percentageLeft}}&#37; &nbsp; left</p>
+                </div>
+              
+              </label> -->
+            </div>
+
+            <!-- Splpit expense by shares -->
+
+            <div formArrayName="splitExpenseByShares" *ngIf="splitByShares == true">
+              <h5>Split by shares</h5>
+              <hr style="size: 10px;">
+              <div
+                *ngFor="
+                  let member of splitExpenseByShares;
+                  let i = index
+                "
+              >
+                <label class="form-check-label d-flex justify-content-between">
+                  <span class="text-capitalize">
+                    <p *ngIf="groupMembers[i].userId == loggedInUser.userId">You</p>
+                    <p *ngIf="groupMembers[i].userId != loggedInUser.userId">{{ groupMembers[i].name }}</p>
+                  </span>
+
+                  <label>
+
+                    <input type="number" [formControlName]="i" style="width: 80px">
+                  </label>
+                </label>
+                <hr style="margin: 0.3rem 0;">
+              </div>
+
+              <!-- Total and remaining Amount -->
+
+              <!-- <label class="form-check-label d-flex justify-content-between">
+                <h5 class="text-capitalize">
+                  Total
+                </h5>
+                <div>
+                  <textarea class="underline-textarea"></textarea>
+                  <p>left</p>
+                </div>
+              
+              </label> -->
+
+            </div>
 
             
             <span
               class="text-danger"
               *ngIf="
-                expenseForm.get('membersOfExpense').hasError('required') &&
-                expenseForm.get('membersOfExpense').touched
+                expenseForm.get('splitExpenseEqually').hasError('required') &&
+                expenseForm.get('splitExpenseEqually').touched
               "
               >Select at least 1 member</span
             >
-            </form>
+          </form>
         </div>
         <div class="card-footer d-flex justify-content-center align-items-center">
           <button
@@ -340,7 +414,7 @@
                   <span *ngIf="!member.isPaid"> will pay you</span>
                   <span *ngIf="member.isPaid"> paid you &nbsp;</span>
                   {{
-                    expenseInModal.amount / splitExpensesInModal.length
+                    member.amount
                     | currency: "INR":"symbol"
                   }}
                   &nbsp; <i *ngIf="member.isPaid" class="fas fa-check text-success"></i>
@@ -366,8 +440,7 @@
 
                 <span class="fs-5">
                   {{
-                    expenseInModal.amount /
-                    splitExpensesInModal.length
+                    member.amount
                       | currency: "INR":"symbol"
                   }}
                   to

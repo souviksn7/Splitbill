@@ -82,7 +82,7 @@ export class GroupDetailsComponent implements OnInit{
    
    expenseDetails = {
     description: "",
-    amount: 100,
+    amount: 0,
     upiId: "",
     date: "",
     addedBy: {
@@ -137,18 +137,40 @@ export class GroupDetailsComponent implements OnInit{
     }
   ]
 
-  // splitExpenseUnequally = [
-  //     {
-  //       "userId": 1,
-  //       "name": "Demo",
-  //       "amount": 0
-  //     }
-  // ]
-
-  splitEqually = false;
+  splitEqually = true;
   splitUnequally = false;
   splitByPercent = false;
   splitByShares = false;
+
+  splitEquallySelected(){
+    this.splitEqually = true;
+    this.splitUnequally = false;
+    this.splitByPercent = false;
+    this.splitByShares = false;
+  }
+
+  splitUnequallySelected(){
+    this.splitUnequally = true;
+    this.splitEqually = false;
+    this.splitByPercent = false;
+    this.splitByShares = false;
+  };
+
+  splitByPercentSelected(){
+    this.splitByPercent = true;
+    this.splitEqually = false;
+    this.splitUnequally = false;
+    this.splitByShares = false;
+  };
+  splitBySharesSelected(){
+    this.splitByShares = true;
+    this.splitEqually = false;
+    this.splitUnequally = false;
+    this.splitByPercent = false;
+  }
+
+  amountLeft = null;
+  percentageLeft = 100;
 
   constructor(
       private _route: ActivatedRoute,
@@ -192,27 +214,49 @@ export class GroupDetailsComponent implements OnInit{
   }
 
   // get members of expense
-  get membersOfExpense(){
-    return (this.expenseForm.get('membersOfExpense') as FormArray).controls;
+  get splitExpenseEqually(){
+    return (this.expenseForm.get('splitExpenseEqually') as FormArray).controls;
   }
 
-  // get splitExpenseUnequally(){
-  //   return (this.expenseForm.get('splitExpenseUnequally') as FormArray).controls;
-  // }
+  get splitExpenseUnequally(){
+    return (this.expenseForm.get('splitExpenseUnequally') as FormArray).controls;
+  }
+
+  get splitExpenseByPercentage(){
+    return (this.expenseForm.get('splitExpenseByPercentage') as FormArray).controls;
+  }
+
+  get splitExpenseByShares(){
+    return (this.expenseForm.get('splitExpenseByShares') as FormArray).controls;
+  }
 
   private populateCheckboxes(){
     this.groupMembers.forEach(()=>{
       const control = this.formBuilder.control(true); // Initialize as checked
-      (this.expenseForm.get('membersOfExpense') as FormArray).push(control);
+      (this.expenseForm.get('splitExpenseEqually') as FormArray).push(control);
     });
   }
 
-  // private populateSplitExpenseUnequally(){
-  //   this.groupMembers.forEach(()=>{
-  //     const control = this.formBuilder.control(0); // Initialize as 0
-  //     (this.expenseForm.get('splitExpenseUnequally') as FormArray).push(control);
-  //   });
-  // }
+  private populateSplitExpenseUnequally(){
+    this.groupMembers.forEach(()=>{
+      const control = this.formBuilder.control(0); // Initialize as 0
+      (this.expenseForm.get('splitExpenseUnequally') as FormArray).push(control);
+    });
+  }
+
+  private populateSplitExpenseByPercentage(){
+    this.groupMembers.forEach(()=>{
+      const control = this.formBuilder.control(0); // Initialize as 0
+      (this.expenseForm.get('splitExpenseByPercentage') as FormArray).push(control);
+    });
+  }
+
+  private populateSplitExpenseByShares(){
+    this.groupMembers.forEach(()=>{
+      const control = this.formBuilder.control(0); // Initialize as 0
+      (this.expenseForm.get('splitExpenseByShares') as FormArray).push(control);
+    });
+  }
 
   // Get group members
   getGroupMembers(){
@@ -222,7 +266,9 @@ export class GroupDetailsComponent implements OnInit{
       // console.log("split Expense equally " + this.splitExpenseUnequally[2].amount);
 
       this.populateCheckboxes();
-      // this.populateSplitExpenseUnequally();
+      this.populateSplitExpenseUnequally();
+      this.populateSplitExpenseByPercentage();
+      this.populateSplitExpenseByShares();
     },
     (error)=>{
       console.log(error);
@@ -260,7 +306,10 @@ export class GroupDetailsComponent implements OnInit{
       
       date: [formattedDate, [Validators.required]],
       upiId: [''],
-      membersOfExpense: new FormArray([], [this.minSelectedCheckboxes(1)])
+      splitExpenseEqually: new FormArray([], [this.minSelectedCheckboxes(1)]),
+      splitExpenseUnequally: new FormArray([]),
+      splitExpenseByPercentage: new FormArray([]),
+      splitExpenseByShares: new FormArray([])
     });
     this.start = true;
   }
@@ -304,47 +353,99 @@ export class GroupDetailsComponent implements OnInit{
     this.expenseDetails.group = {groupId: this.groupId}
   }
 
+  checkForSplitEqualy(){
+    let size = this.expenseForm.value.splitExpenseEqually.length;
+    for(let i=0 ; i<size ; i++){
+      if(this.expenseForm.value.splitExpenseEqually[i] === true)
+        return false;
+    }
+    return true;
+  }
+  checkForSplitUnequally(totalAmount: number){
+    let size = this.splitExpenseUnequally.length;
+    let currentTotalAmount = 0;
+    for(let i=0 ; i<size ; i++){
+      currentTotalAmount+=this.splitExpenseUnequally[i].value;
+    }
+    return currentTotalAmount != totalAmount;
+  }
+  checkForSplitByPercentage(){
+    return false;
+  }
+  checkForSplitByShares(){
+    return false;
+  }
+
   // add new expense
   addNewExpense(){
-    this.putDataToExpenseDetails()
+    this.putDataToExpenseDetails();
 
-    let currentExpenseId: number;
+    // console.log("description ", this.expenseDetails.description, " ", this.expenseDetails.amount);
 
-    this._groupDetails.addExpense(this.expenseDetails).subscribe((data: any)=>{
-      currentExpenseId = data.expenseId;
-      Swal.fire("Success!!!", "Expense is added successfully", "success")
-      console.log(data);
-      
-      data.date = data.date.substring(0,10);
-      this.expenses.push(data);
-
-      let numberOfInvolvedMembers = 0;
-      this.expenseForm.value.membersOfExpense.forEach((element:any) => {
-        if(element === true)
-          numberOfInvolvedMembers++;
-      });            
-            
-      let size = this.expenseForm.value.membersOfExpense.length;
-
-      for(let i=0 ; i<size ; i++){
-
-        if(this.expenseForm.value.membersOfExpense[i] === true){
-          this.currentSplitExpense.user.userId = this.groupMembers[i].userId;
-          this.currentSplitExpense.expense.expenseId = currentExpenseId;
-          this.currentSplitExpense.amount = this.expenseForm.value.amount/(numberOfInvolvedMembers+1);
-          this.currentSplitExpense.isPaid = false;
-
-          this._groupDetails.addSplitExpense(this.currentSplitExpense).subscribe((data: any)=>{
-            if(i==size-1){
-              this.initiateExpenseForm();
-              this.populateCheckboxes();
-            }
-          })
+    if(this.expenseDetails.description == null || this.expenseDetails.amount == null){
+      console.log("loooooooooooool");
+      Swal.fire("Error!!!", "description and amount cannot be empty", "error");
+    }
+    else{
+        if(this.splitEqually === true && this.checkForSplitEqualy()){
+          Swal.fire("Error!!!", "Please select atleast one member", "error")
         }
-      }
+        else if(this.splitUnequally === true && this.checkForSplitUnequally(this.expenseDetails.amount)){
+          Swal.fire("Error!!!", "Sum of added expense amounts is not equal to total expense amount","error")
+        }
+        else if(this.splitByPercent === true && this.checkForSplitByPercentage()){
+          
+        }
+        else if(this.splitByShares === true && this.checkForSplitByShares()){
+          
+        }
+        else{
+          let currentExpenseId: number;
 
+          this._groupDetails.addExpense(this.expenseDetails).subscribe((data: any)=>{
+            
+            currentExpenseId = data.expenseId;
+            Swal.fire("Success!!!", "Expense is added successfully", "success")
+            console.log(data);
+            
+            data.date = data.date.substring(0,10);
+            this.expenses.push(data);
 
-    });
+            let numberOfInvolvedMembers = 0;
+            this.expenseForm.value.splitExpenseEqually.forEach((element:any) => {
+              if(element === true)
+                numberOfInvolvedMembers++;
+            });            
+                  
+            let size = this.expenseForm.value.splitExpenseEqually.length;
+
+            for(let i=0 ; i<size ; i++){
+              if(this.expenseForm.value.splitExpenseEqually[i] === true){
+                this.currentSplitExpense.user.userId = this.groupMembers[i].userId;
+                this.currentSplitExpense.expense.expenseId = currentExpenseId;
+
+                if(this.splitEqually === true){
+                  this.currentSplitExpense.amount = this.expenseForm.value.amount/(numberOfInvolvedMembers+1);
+                }
+                else if(this.splitUnequally === true){
+                  this.currentSplitExpense.amount = this.splitExpenseUnequally[i].value;            
+                }
+                this.currentSplitExpense.isPaid = false;
+
+                this._groupDetails.addSplitExpense(this.currentSplitExpense).subscribe((data: any)=>{
+                  if(i==size-1){
+                    this.initiateExpenseForm();
+                    this.populateCheckboxes();
+                    this.populateSplitExpenseUnequally();
+                    this.populateSplitExpenseByPercentage();
+                    this.populateSplitExpenseByShares();
+                  }
+                })
+              }
+            }
+          });
+        }
+    }
   }
 
   // assign expense to Modal
@@ -414,32 +515,6 @@ export class GroupDetailsComponent implements OnInit{
     });
   }
 
-  splitEquallySelected(){
-    this.splitEqually = true;
-    this.splitUnequally = false;
-    this.splitByPercent = false;
-    this.splitByShares = false;
-  }
-
-  splitUnequallySelected(){
-    this.splitUnequally = true;
-    this.splitEqually = false;
-    this.splitByPercent = false;
-    this.splitByShares = false;
-  };
-
-  splitByPercentSelected(){
-    this.splitByPercent = true;
-    this.splitEqually = false;
-    this.splitUnequally = false;
-    this.splitByShares = false;
-  };
-  splitBySharesSelected(){
-    this.splitByShares = true;
-    this.splitEqually = false;
-    this.splitUnequally = false;
-    this.splitByPercent = false;
-  }
-
+  
 
 }

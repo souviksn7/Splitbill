@@ -27,8 +27,7 @@
                       </span>
                       paid you
                       {{
-                        expenseDetails.amount /
-                        splitExpensesInModal.length
+                        member.amount 
                           | currency: "INR":"symbol"
                       }}
                       <hr />
@@ -40,8 +39,7 @@
                       >
                       -
                       {{
-                        expenseDetails.amount /
-                          splitExpensesInModal.length
+                        member.amount 
                           | currency: "INR":"symbol"
                       }}
                       <button
@@ -64,8 +62,7 @@
                     <div *ngIf="member.isPaid; fontType">
                       You have Paid
                       {{
-                        expenseDetails.amount /
-                          splitExpensesInModal.length
+                        member.amount
                           | currency: "INR":"symbol"
                       }}
                       to {{ expenseDetails.addedBy.name }}
@@ -73,8 +70,7 @@
                     <div *ngIf="!member.isPaid; fontType">
                       You have to pay
                       {{
-                        expenseDetails.amount /
-                          splitExpensesInModal.length
+                        member.amount
                           | currency: "INR":"symbol"
                       }}
                       to {{ expenseDetails.addedBy.name }}
