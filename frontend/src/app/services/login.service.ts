@@ -7,12 +7,11 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-
-  
-
   constructor(private http: HttpClient) {
     
   }
+
+  userName = "";
 
   userData = new Subject<any>(); //Decalring new RxJs Subject
 
@@ -56,18 +55,18 @@ export class LoginService {
   public setUser(user: any) {
     console.log("user is " + user.name);
     localStorage.setItem('user', JSON.stringify(user));
-    
+    this.userName = user.name;
   }
 
-  // public getUserName(){
-  //   let userStr = localStorage.getItem('user');
-  //   if (userStr != null) {
-  //     return JSON.parse(userStr).name;
-  //   } else {
-  //     this.logout();
-  //     return null;
-  //   }
-  // }
+  public getUserName(){
+    let userStr = localStorage.getItem('user');
+    if (userStr != null) {
+      return JSON.parse(userStr).name;
+    } else {
+      this.logout();
+      return null;
+    }
+  }
 
   public getUser() {
     let userStr = localStorage.getItem('user');

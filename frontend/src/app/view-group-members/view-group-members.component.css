@@ -104,6 +104,11 @@ input::-webkit-inner-spin-button {
   .addButton{
     padding-right: 5px;
   }
+
+  a{
+    color: white;
+  }
+
   @keyframes stroke {
     100% {
       stroke-dashoffset: 0;

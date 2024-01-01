@@ -124,11 +124,9 @@ a {
     box-shadow: inset 0px 0px 0px 30px #7ac142;
   }
 }
-
 .button-container {
   position: relative;
 }
-
 .bean-button {
   top: 0;
   right: 0;

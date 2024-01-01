@@ -45,7 +45,8 @@
       <div class="dropdown-container ms-auto" *ngIf="_login.isLoggedIn() == true">
       
         <button class="dropdown-button">
-          <span>{{loggedInUser.name}}</span>
+          <span *ngIf="_login.userName != ''">{{_login.userName}}</span>
+          <span *ngIf="_login.userName == ''">{{loggedInUser.name}}</span>
           <span class="dropdown-icon">&#9660;</span>
         </button>
       

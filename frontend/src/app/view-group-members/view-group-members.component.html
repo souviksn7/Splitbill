@@ -1,4 +1,8 @@
 <div class="container">
+    <button class="btn btn-primary">
+      <a [routerLink]="'/groups/group-details/' + groupId">back to {{currentGroup.groupName}}</a>
+    </button>
+    <hr>
     <div class="row">
           <div class="col-md-8 col-sm-12 table-responsive">
             <h4 class="yourExpenseheading">Group members</h4>

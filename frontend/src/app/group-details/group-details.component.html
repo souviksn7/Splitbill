@@ -2,7 +2,9 @@
 <div class="container">
   <div class="row">
     <div class="col-md-7 col-sm-12 table-responsive">
+      
       <div class="d-flex justify-content-between">
+        
         <div><h2 class="yourExpenseheading">{{currentGroup.groupName}}</h2></div>
         <div><a href="">&vellip;</a></div>
       </div>
@@ -260,6 +262,7 @@
                   let i = index
                 "
               >
+
                 <label class="form-check-label d-flex justify-content-between">
                   <span class="text-capitalize">
                     <p *ngIf="groupMembers[i].userId == loggedInUser.userId">You</p>
@@ -270,6 +273,7 @@
                     <input type="number" [formControlName]="i" style="width: 80px"> %
                   </label>
                 </label>
+
                 <hr style="margin: 0.3rem 0;">
                 
               </div>

@@ -1,9 +1,18 @@
+
+<i class="bi bi-arrow-left-square-fill"></i>
+
 <div class="container">
     <div class="row">
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-8">
+            <button class="btn btn-primary">
+              <a [routerLink]="'/groups/group-details/' + expenseDetails.group.groupId">back to {{expenseDetails.group.groupName}}</a>
+            </button>
+            
+            <hr>
             <div class="card">
+              
               <div
                 class="card-header text-capitalize text-center fs-3 fontType text-primary"
               >

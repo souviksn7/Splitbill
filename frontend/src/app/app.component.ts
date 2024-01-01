@@ -19,10 +19,10 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._login.userData.subscribe((receiveddata) => {
-      console.log(receiveddata);
-      this.loggedInUser = receiveddata;
-    });
+    // this._login.userData.subscribe((receiveddata) => {
+    //   console.log(receiveddata);
+    //   this.loggedInUser = receiveddata;
+    // });
       this.getCurrentUser();
       console.log("in app.component.ts");
       

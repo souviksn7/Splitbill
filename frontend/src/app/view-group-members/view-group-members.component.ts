@@ -14,6 +14,10 @@ import { group } from '@angular/animations';
 export class ViewGroupMembersComponent implements OnInit {
 
   groupId: any;
+  currentGroup = {
+    groupId: 1,
+    groupName: "Demo group"
+  }
 
   groupMembers = [
     {
@@ -50,6 +54,11 @@ export class ViewGroupMembersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+      this._groupDetails.getGroupDetails(this.groupId).subscribe((data: any)=>{
+        this.currentGroup = data;
+      })
+
       this._groupDetails.getGroupMembers(this.groupId).subscribe((data: any)=>{
         this.groupMembers = data;
         // console.log(this.groupMembers);
@@ -111,7 +120,10 @@ export class ViewGroupMembersComponent implements OnInit {
   }
 
   filterMembers(){
-    this.users = this.AllUsers.filter((user)=>user.name.includes(this.searchValue));
+    // this.users = this.AllUsers.filter((user)=>user.name.includes(this.searchValue));
+    this.users = this.AllUsers.filter((user) => 
+      user.name.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
     console.log("button clicked");
   }
 

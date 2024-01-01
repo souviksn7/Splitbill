@@ -253,7 +253,7 @@ export class GroupDetailsComponent implements OnInit{
 
   private populateSplitExpenseByShares(){
     this.groupMembers.forEach(()=>{
-      const control = this.formBuilder.control(0); // Initialize as 0
+      const control = this.formBuilder.control(0); // Initialize as 1
       (this.expenseForm.get('splitExpenseByShares') as FormArray).push(control);
     });
   }
@@ -350,6 +350,7 @@ export class GroupDetailsComponent implements OnInit{
     this.expenseDetails.upiId = this.expenseForm.value.upiId;
     this.expenseDetails.date = this.expenseForm.value.date;
     this.expenseDetails.addedBy.userId = this.loggedInUser.userId;
+    this.expenseDetails.addedBy.name = this.loggedInUser.name;
     this.expenseDetails.group = {groupId: this.groupId}
   }
 
@@ -370,10 +371,20 @@ export class GroupDetailsComponent implements OnInit{
     return currentTotalAmount != totalAmount;
   }
   checkForSplitByPercentage(){
-    return false;
+    let size = this.splitExpenseByPercentage.length;
+    let currentTotalPercentage = 0;
+    for(let i=0 ; i<size ; i++){
+      currentTotalPercentage+=this.splitExpenseByPercentage[i].value;
+    }
+    return currentTotalPercentage != 100;
   }
   checkForSplitByShares(){
-    return false;
+    let size = this.splitExpenseByShares.length;
+    for(let i=0 ; i<size ; i++){
+      if(this.splitExpenseByShares[i].value > 0)
+        return false;
+    }
+    return true;
   }
 
   // add new expense
@@ -384,20 +395,20 @@ export class GroupDetailsComponent implements OnInit{
 
     if(this.expenseDetails.description == null || this.expenseDetails.amount == null){
       console.log("loooooooooooool");
-      Swal.fire("Error!!!", "description and amount cannot be empty", "error");
+      Swal.fire("Error!!!", "Expense name and Amount cannot be empty", "error");
     }
     else{
         if(this.splitEqually === true && this.checkForSplitEqualy()){
           Swal.fire("Error!!!", "Please select atleast one member", "error")
         }
         else if(this.splitUnequally === true && this.checkForSplitUnequally(this.expenseDetails.amount)){
-          Swal.fire("Error!!!", "Sum of added expense amounts is not equal to total expense amount","error")
+          Swal.fire("Error!!!", "The total of everyone's owned cost is different than the total cost","error")
         }
         else if(this.splitByPercent === true && this.checkForSplitByPercentage()){
-          
+          Swal.fire("Error!!!", "The total of everyone's owned cost is different than the total cost","error")          
         }
         else if(this.splitByShares === true && this.checkForSplitByShares()){
-          
+          Swal.fire("Error!!!", "Please add atleast one share", "error")          
         }
         else{
           let currentExpenseId: number;
@@ -419,10 +430,17 @@ export class GroupDetailsComponent implements OnInit{
                   
             let size = this.expenseForm.value.splitExpenseEqually.length;
 
+            let totalShares = 0;
+            for(let i=0;i<size;i++){
+              totalShares += this.splitExpenseByShares[i].value;
+            }
+
             for(let i=0 ; i<size ; i++){
+
               if(this.expenseForm.value.splitExpenseEqually[i] === true){
                 this.currentSplitExpense.user.userId = this.groupMembers[i].userId;
                 this.currentSplitExpense.expense.expenseId = currentExpenseId;
+                this.currentSplitExpense.isPaid = false;
 
                 if(this.splitEqually === true){
                   this.currentSplitExpense.amount = this.expenseForm.value.amount/(numberOfInvolvedMembers+1);
@@ -430,19 +448,24 @@ export class GroupDetailsComponent implements OnInit{
                 else if(this.splitUnequally === true){
                   this.currentSplitExpense.amount = this.splitExpenseUnequally[i].value;            
                 }
-                this.currentSplitExpense.isPaid = false;
-
-                this._groupDetails.addSplitExpense(this.currentSplitExpense).subscribe((data: any)=>{
-                  if(i==size-1){
-                    this.initiateExpenseForm();
-                    this.populateCheckboxes();
-                    this.populateSplitExpenseUnequally();
-                    this.populateSplitExpenseByPercentage();
-                    this.populateSplitExpenseByShares();
-                  }
-                })
+                else if(this.splitByPercent === true){
+                  this.currentSplitExpense.amount = (this.splitExpenseByPercentage[i].value*this.expenseForm.value.amount)/100;
+                }
+                else{
+                  this.currentSplitExpense.amount = (this.splitExpenseByShares[i].value*this.expenseForm.value.amount)/totalShares;
+                }
+                
+                if(this.currentSplitExpense.amount != null && this.currentSplitExpense.amount > 0){
+                    this._groupDetails.addSplitExpense(this.currentSplitExpense).subscribe((data: any)=>{
+                    })
+                }
               }
             }
+              this.initiateExpenseForm();
+              this.populateCheckboxes();
+              this.populateSplitExpenseUnequally();
+              this.populateSplitExpenseByPercentage();
+              this.populateSplitExpenseByShares();
           });
         }
     }

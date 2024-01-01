@@ -12,5 +12,7 @@
 }
 .fontType{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
+}
+a{
+    color: white;
 }
